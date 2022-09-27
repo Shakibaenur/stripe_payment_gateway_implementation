@@ -6,7 +6,6 @@ import 'package:stripe_gateway_implementation/utils/constants.dart';
 import 'data/network/client/dio_base_client.dart';
 
 void main() {
-
   Stripe.publishableKey = Constants.stripePublisherKey;
   runApp(const MyApp());
 }
@@ -37,9 +36,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   Map<String, dynamic>? paymentIntentData;
   late int price = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
   Future<void> makePayment(
       {required String amount, required String currency}) async {
     try {
@@ -83,14 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   createPaymentIntent(String amount, String currency) async {
     try {
-      Map<String, dynamic> body = {
-        'amount': calculateAmount(amount),
-        'currency': currency,
-        'payment_method_types[]': 'card'
-      };
       Response response = await DioBaseClient().postPayment(
         'https://api.stripe.com/v1/payment_intents',
-        data: body,
         queryParameters: {
           "amount": calculateAmount(amount),
           'currency': currency,
@@ -123,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final a = (int.parse(amount)) * 100;
     return a.toString();
   }
+
   snackbar(String text) {
     return ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(text)));
